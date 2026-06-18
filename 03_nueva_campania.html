@@ -495,9 +495,9 @@ td{
           </div>
 
           <div class="field">
-            <label>Tipo de proceso</label>
+            <label>Origen de datos</label>
             <select id="archivoRaw">
-              <option value="">Seleccione tipo</option>
+              <option value="">Seleccione origen</option>
               <option>Raw_Call</option>
               <option>Raw_CC</option>
               <option>Personalizado</option>
@@ -508,6 +508,38 @@ td{
             <label>Responsable</label>
             <input type="text" id="responsable" placeholder="Ej. Analista de cartera">
           </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Equipos <span style="color:var(--muted);font-weight:normal">(opcional)</span></label>
+            <select id="equipo">
+              <option value="">Seleccione equipo</option>
+              <option>Cobro_Call</option>
+              <option>Cobro_M1</option>
+              <option>Cobro_M2</option>
+              <option>Cobro_M3</option>
+              <option>Cobro_M4</option>
+              <option>Cash_M3</option>
+              <option>Cash_M4</option>
+              <option>Cobro_EMMA</option>
+            </select>
+            <small style="color:var(--muted)">Motor de marcación en Inconcert.</small>
+          </div>
+
+          <div class="field">
+            <label>Filtros predeterminados</label>
+            <select id="filtroPredet">
+              <option value="">Seleccione filtro</option>
+              <option>1.8_Saldo_Medio_Alto</option>
+              <option>1.8_Welcome</option>
+              <option>M2_Lunes_Sabado</option>
+              <option>Personalizado</option>
+            </select>
+            <small style="color:var(--muted)">Se autocompleta según el origen; editable por negocio.</small>
+          </div>
+
+          <div class="field"></div>
         </div>
       </div>
     </section>
@@ -688,6 +720,19 @@ td{
             </div>
           </div>
 
+          <div class="filter-group full">
+            <div class="filter-title">Programación de ejecución</div>
+            <div class="form-row">
+              <div class="field">
+                <label>Fecha y hora de ejecución del robot</label>
+                <input type="datetime-local" id="fechaEjecucion">
+                <small style="color:var(--muted)">La campaña se encola y queda visible en el Historial de procesos.</small>
+              </div>
+              <div class="field"></div>
+              <div class="field"></div>
+            </div>
+          </div>
+
         </div>
 
         <div id="resultado" class="result-box"></div>
@@ -742,11 +787,11 @@ td{
             <tr>
               <th>ID</th>
               <th>Campaña</th>
-              <th>Archivo</th>
+              <th>Origen de datos</th>
               <th>Filtros</th>
               <th>Registros</th>
               <th>Estado</th>
-              <th>Fecha proceso</th>
+              <th>Ejecución programada</th>
             </tr>
           </thead>
           <tbody id="tablaHistorial">
@@ -788,6 +833,9 @@ const resultado = document.getElementById("resultado");
 const nombreCampania = document.getElementById("nombreCampania");
 const archivoRaw = document.getElementById("archivoRaw");
 const responsable = document.getElementById("responsable");
+const equipo = document.getElementById("equipo");
+const filtroPredet = document.getElementById("filtroPredet");
+const fechaEjecucion = document.getElementById("fechaEjecucion");
 const btnProcesar = document.getElementById("btnProcesar");
 const btnLimpiar = document.getElementById("btnLimpiar");
 const tablaHistorial = document.getElementById("tablaHistorial");
@@ -822,6 +870,9 @@ btnLimpiar.addEventListener("click", () => {
   nombreCampania.value = "";
   archivoRaw.value = "";
   responsable.value = "";
+  equipo.value = "";
+  filtroPredet.value = "";
+  fechaEjecucion.value = "";
   document.getElementById("fechaActualizada").value = "";
   document.getElementById("fechaAtraso").value = "";
   document.getElementById("fechaGestion").value = "";
@@ -838,7 +889,7 @@ btnProcesar.addEventListener("click", () => {
     resultado.className = "result-box success";
     resultado.style.background = "#fee2e2";
     resultado.style.color = "#dc2626";
-    resultado.textContent = "Debe completar el nombre de campaña y seleccionar el tipo de proceso antes de enviar la solicitud.";
+    resultado.textContent = "Debe completar el nombre de campaña y seleccionar el origen de datos antes de enviar la solicitud.";
     return;
   }
 
@@ -860,6 +911,8 @@ btnProcesar.addEventListener("click", () => {
 
   resumenEstado.textContent = "Pendiente robot";
 
+  const ejec = fechaEjecucion.value ? fechaEjecucion.value.replace("T", " ") : "Inmediata";
+
   const fila = document.createElement("tr");
   fila.innerHTML = `
     <td>${id}</td>
@@ -868,10 +921,12 @@ btnProcesar.addEventListener("click", () => {
     <td>${filtros.length}</td>
     <td>${registros.toLocaleString("es-AR")}</td>
     <td><span class="badge green">Pendiente robot</span></td>
-    <td>${new Date().toLocaleString("es-AR")}</td>
+    <td>${ejec}</td>
   `;
 
   tablaHistorial.prepend(fila);
+
+  setTimeout(function(){ window.location.href = "04_confirmacion.html"; }, 900);
 });
 
 actualizarResumen();
