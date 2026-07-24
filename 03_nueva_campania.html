@@ -537,22 +537,19 @@ td{
           </table>
         </div>
         <div style="margin-top:12px"><button type="button" class="btn btn-secondary" onclick="addLote()">+ Agregar lote</button></div>
-        <small style="color:var(--muted);display:block;margin-top:10px">Los filtros predeterminados y sus condiciones se administran en <strong>Par&aacute;metros</strong>. La prioridad se traduce en Inconcert (1 &rarr; 99/999, 2 &rarr; 88/888&hellip;). Para un filtro que a&uacute;n no existe, eleg&iacute; &ldquo;Personalizado&rdquo; y defin&iacute; sus condiciones abajo.</small>
+        <small style="color:var(--muted);display:block;margin-top:10px">Los filtros predeterminados y sus condiciones se administran en <strong>Par&aacute;metros</strong>. La prioridad se traduce en Inconcert (1 &rarr; 99/999, 2 &rarr; 88/888&hellip;). Para un filtro que a&uacute;n no existe, se crea primero en Par&aacute;metros.</small>
       </div>
     </section>
 
     <section class="card">
       <div class="card-header">
         <div>
-          <h3>Condiciones del filtro personalizado</h3>
-          <p>Solo para el caso &ldquo;Personalizado&rdquo;. Los filtros predeterminados y sus condiciones se administran en Par&aacute;metros.</p>
+          <h3>Filtros de descarga (Power BI)</h3>
+          <p>Criterios con los que el robot filtra y descarga la informaci&oacute;n de Power BI antes de exportar (paso &ldquo;Aplicaci&oacute;n de filtros&rdquo;). Se combinan con el origen de datos y la mora.</p>
         </div>
       </div>
 
-      <div class="card-body" style="padding-bottom:0">
-        <button type="button" class="btn btn-secondary" onclick="togglePers()">Mostrar / ocultar condiciones del filtro personalizado</button>
-      </div>
-      <div class="card-body" id="persBody" style="display:none">
+      <div class="card-body">
 
         <div class="grid">
 
@@ -927,7 +924,7 @@ btnProcesar.addEventListener("click", () => {
   setTimeout(function(){ window.location.href = "04_confirmacion.html"; }, 900);
 });
 
-const LOTE_FILTROS = ["1.4_Incumplida","1.4_Incumplida_Mes","1.8_Asalariados","1.8_Contacto_Reciente","1.8_Emma","1.8_FDPD","1.8_HMR","1.8_Rodamiento","1.8_Saldo_Alto","1.8_Saldo_Bajo","1.8_Saldo_Medio","1.8_Sin_Gestion","Personalizado"];
+const LOTE_FILTROS = ["1.4_Incumplida","1.4_Incumplida_Mes","1.8_Asalariados","1.8_Contacto_Reciente","1.8_Emma","1.8_FDPD","1.8_HMR","1.8_Rodamiento","1.8_Saldo_Alto","1.8_Saldo_Bajo","1.8_Saldo_Medio","1.8_Sin_Gestion"];
 const SEL_ST = "width:100%;height:38px;border:1px solid var(--borde);border-radius:9px;padding:0 8px;font-size:13px";
 function addLote(){
   const tb = document.getElementById("lotesBody");
