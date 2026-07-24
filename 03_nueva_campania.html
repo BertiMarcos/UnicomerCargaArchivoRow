@@ -397,6 +397,18 @@ td{
   color:var(--rojo);
 }
 
+.switch-row{display:flex;align-items:center;gap:14px;background:#eaf2ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.switch{position:relative;display:inline-block;width:52px;height:28px;flex:0 0 auto}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#cbd5e1;transition:.2s;border-radius:999px}
+.slider:before{content:"";position:absolute;height:22px;width:22px;left:3px;top:3px;background:white;transition:.2s;border-radius:50%}
+.switch input:checked + .slider{background:var(--azul-medio)}
+.switch input:checked + .slider:before{transform:translateX(24px)}
+.switch-row .txt{font-size:13px;color:#1e3a5f}
+.switch-row .txt strong{display:block;font-size:14px;margin-bottom:2px}
+.flujo-note{font-size:12px;color:#334155;background:#f8fafc;border:1px dashed var(--borde);border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.55}
+.bi-disabled{opacity:.4;pointer-events:none}
+
 @media(max-width:1050px){
   .app{
     grid-template-columns:1fr;
@@ -548,9 +560,16 @@ td{
 
       <div class="card-body">
 
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="toggleBI"><span class="slider"></span></label>
+          <div class="txt"><strong>&iquest;Descargar / actualizar la importaci&oacute;n desde Power BI?</strong>
+          Apagado = se <b>reutiliza</b> la importaci&oacute;n existente y s&oacute;lo se recrean los lotes. Encendido = el robot vuelve a <b>descargar de Power BI</b> (los filtros de descarga pasan a ser obligatorios).</div>
+        </div>
+        <div class="flujo-note" id="flujoNote"></div>
+
         <div class="form-row" style="margin-bottom:8px"><div class="field"><label>Nombre de la importación</label><input list="impList" id="archivoRaw" placeholder="Ej. Raw_Call / Raw_CC (o nombre propio)"><datalist id="impList"><option>Raw_Call</option><option>Raw_CC</option></datalist><small style="color:var(--muted)">Aquí se sube lo extraído de Power BI. Raw_Call y Raw_CC deben estar cargadas cada mañana; puede ser un nombre propio.</small></div><div class="field"></div><div class="field"></div></div>
 
-        <div class="grid">
+        <div class="grid" id="biFiltrosGrid">
           <div class="filter-group full"><div class="filter-title">Responsable / Tipo</div><div class="buttons"><button class="filter-btn" data-filter="CASH">CASH</button><button class="filter-btn" data-filter="EMMA_INTERNO">EMMA_INTERNO</button><button class="filter-btn" data-filter="EMMA_TERCERO">EMMA_TERCERO</button><button class="filter-btn" data-filter="EMPLEADO">EMPLEADO</button><button class="filter-btn" data-filter="EXTERNOS">EXTERNOS</button><button class="filter-btn" data-filter="FALLECIDO">FALLECIDO</button><button class="filter-btn" data-filter="FINS">FINS</button><button class="filter-btn" data-filter="FPD">FPD</button></div></div>
           <div class="filter-group full"><div class="filter-title">Nivel mora</div><div class="buttons"><button class="filter-btn" data-filter="M0">M0</button><button class="filter-btn" data-filter="M1">M1</button><button class="filter-btn" data-filter="M2">M2</button><button class="filter-btn" data-filter="M3">M3</button><button class="filter-btn" data-filter="M4">M4</button><button class="filter-btn" data-filter="M5">M5</button><button class="filter-btn" data-filter="M6">M6</button><button class="filter-btn" data-filter="M7">M7</button><button class="filter-btn" data-filter="M8">M8</button><button class="filter-btn" data-filter="M9">M9</button></div></div>
           <div class="filter-group full"><div class="filter-title">Nivel mora actual</div><div class="buttons"><button class="filter-btn" data-filter="M1">M1</button><button class="filter-btn" data-filter="M2">M2</button><button class="filter-btn" data-filter="M3">M3</button><button class="filter-btn" data-filter="M4">M4</button><button class="filter-btn" data-filter="M5">M5</button><button class="filter-btn" data-filter="M6">M6</button><button class="filter-btn" data-filter="M7">M7</button><button class="filter-btn" data-filter="M8">M8</button><button class="filter-btn" data-filter="M9">M9</button></div></div>
@@ -678,6 +697,20 @@ const fechaEjecucion = document.getElementById("fechaEjecucion");
 const btnProcesar = document.getElementById("btnProcesar");
 const btnLimpiar = document.getElementById("btnLimpiar");
 const tablaHistorial = document.getElementById("tablaHistorial");
+const toggleBI = document.getElementById("toggleBI");
+const flujoNote = document.getElementById("flujoNote");
+const biFiltrosGrid = document.getElementById("biFiltrosGrid");
+
+function actualizarFlujo(){
+  if(toggleBI.checked){
+    biFiltrosGrid.classList.remove("bi-disabled");
+    flujoNote.innerHTML = "<strong>Flujo &mdash; actualizar desde Power BI:</strong> 1) el robot borra <b>todos los lotes de contacto</b> de la importaci&oacute;n &rarr; 2) borra la <b>importaci&oacute;n</b> &rarr; 3) descarga de Power BI con los filtros de abajo (obligatorios) &rarr; 4) crea nuevamente la importaci&oacute;n &rarr; 5) crea los lotes con sus prioridades.";
+  } else {
+    biFiltrosGrid.classList.add("bi-disabled");
+    flujoNote.innerHTML = "<strong>Flujo &mdash; reutilizar importaci&oacute;n:</strong> 1) el robot borra <b>todos los lotes de contacto</b> de la importaci&oacute;n &rarr; 2) crea los lotes nuevamente con sus prioridades. No se vuelve a descargar de Power BI; los filtros de descarga no son obligatorios.";
+  }
+}
+toggleBI.addEventListener("change", actualizarFlujo);
 
 function obtenerFiltrosActivos(){
   return Array.from(document.querySelectorAll(".filter-btn.active"))
@@ -710,6 +743,7 @@ btnLimpiar.addEventListener("click", () => {
   equipo.value = "";
   document.getElementById("lotesBody").innerHTML = ""; addLote();
   fechaEjecucion.value = "";
+  toggleBI.checked = false; actualizarFlujo();
   resumenEstado.textContent = "Pendiente";
   resultado.className = "result-box";
   resultado.textContent = "";
@@ -733,6 +767,14 @@ btnProcesar.addEventListener("click", () => {
     resultado.style.background = "#fef3c7";
     resultado.style.color = "#92400e";
     resultado.textContent = "Debe agregar al menos un lote (filtro predeterminado) a la campaña.";
+    return;
+  }
+
+  if(toggleBI.checked && filtros.length === 0){
+    resultado.className = "result-box success";
+    resultado.style.background = "#fef3c7";
+    resultado.style.color = "#92400e";
+    resultado.textContent = "Con la descarga de Power BI activada debe seleccionar al menos un filtro de descarga.";
     return;
   }
 
@@ -780,6 +822,7 @@ function delLote(b){ const tr=b.closest("tr"); tr.parentNode.removeChild(tr); }
 function togglePers(){ const el=document.getElementById("persBody"); el.style.display = (el.style.display==="none") ? "" : "none"; }
 addLote();
 actualizarResumen();
+actualizarFlujo();
 </script>
 
 </body>
