@@ -514,10 +514,6 @@ td{
               <option>Personalizado</option>
             </select>
           </div>
-          <div class="field">
-            <label>Responsable</label>
-            <input type="text" id="responsable" placeholder="Ej. Analista de cartera">
-          </div>
         </div>
       </div>
     </section>
@@ -532,16 +528,35 @@ td{
       <div class="card-body">
         <div class="table-wrap">
           <table>
-            <thead><tr><th style="width:52%">Filtro predeterminado (lote)</th><th style="width:38%">Prioridad (1 = m&aacute;s importante)</th><th></th></tr></thead>
+            <thead><tr><th style="width:52%">Filtro predeterminado (lote)</th><th style="width:38%">Prioridad (9 = m&aacute;s importante)</th><th></th></tr></thead>
             <tbody id="lotesBody"></tbody>
           </table>
         </div>
         <div style="margin-top:12px"><button type="button" class="btn btn-secondary" onclick="addLote()">+ Agregar lote</button></div>
-        <small style="color:var(--muted);display:block;margin-top:10px">Los filtros predeterminados y sus condiciones se administran en <strong>Par&aacute;metros</strong>. La prioridad se traduce en Inconcert (1 &rarr; 99/999, 2 &rarr; 88/888&hellip;). Para un filtro que a&uacute;n no existe, se crea primero en Par&aacute;metros.</small>
+        <small style="color:var(--muted);display:block;margin-top:10px">Los filtros predeterminados y sus condiciones se administran en <strong>Par&aacute;metros</strong>. La prioridad se traduce en Inconcert (9 &rarr; 99/999, 8 &rarr; 88/888 &hellip; 1 &rarr; 11/111); 9 = m&aacute;s importante (se ve primero). Para un filtro que a&uacute;n no existe, se crea primero en Par&aacute;metros.</small>
       </div>
     </section>
 
-    <section class="card">
+        <section class="card">
+      <div class="card-header">
+        <div>
+          <h3>Programación de ejecución</h3>
+          <p>Fecha y hora en que el robot ejecuta la campaña con los lotes seleccionados. Se encola y queda visible en el Historial de procesos.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="field">
+            <label>Fecha y hora de ejecución del robot</label>
+            <input type="datetime-local" id="fechaEjecucion">
+          </div>
+          <div class="field"></div>
+          <div class="field"></div>
+        </div>
+      </div>
+    </section>
+
+<section class="card">
       <div class="card-header">
         <div>
           <h3>Filtros de descarga (Power BI)</h3>
@@ -717,18 +732,6 @@ td{
             </div>
           </div>
 
-          <div class="filter-group full">
-            <div class="filter-title">Programación de ejecución</div>
-            <div class="form-row">
-              <div class="field">
-                <label>Fecha y hora de ejecución del robot</label>
-                <input type="datetime-local" id="fechaEjecucion">
-                <small style="color:var(--muted)">La campaña se encola y queda visible en el Historial de procesos.</small>
-              </div>
-              <div class="field"></div>
-              <div class="field"></div>
-            </div>
-          </div>
 
         </div>
 
@@ -828,7 +831,6 @@ const resumenCampania = document.getElementById("resumenCampania");
 const resumenEstado = document.getElementById("resumenEstado");
 const resultado = document.getElementById("resultado");
 const archivoRaw = document.getElementById("archivoRaw");
-const responsable = document.getElementById("responsable");
 const equipo = document.getElementById("equipo");
 const fechaEjecucion = document.getElementById("fechaEjecucion");
 const btnProcesar = document.getElementById("btnProcesar");
@@ -863,7 +865,6 @@ equipo.addEventListener("change", actualizarResumen);
 btnLimpiar.addEventListener("click", () => {
   botonesFiltro.forEach(btn => btn.classList.remove("active"));
   archivoRaw.value = "";
-  responsable.value = "";
   equipo.value = "";
   document.getElementById("lotesBody").innerHTML = ""; addLote();
   fechaEjecucion.value = "";
@@ -930,7 +931,7 @@ function addLote(){
   const tb = document.getElementById("lotesBody");
   const tr = document.createElement("tr");
   const fops = '<option value="">Seleccione filtro</option>' + LOTE_FILTROS.map(f => '<option>'+f+'</option>').join('');
-  const pops = '<option value="">Prioridad</option>' + [1,2,3,4,5,6,7,8,9].map(pr => '<option value="'+pr+'">'+pr+(pr===1?' \u2014 m\u00e1s importante':(pr===9?' \u2014 menos importante':''))+'</option>').join('');
+  const pops = '<option value="">Prioridad</option>' + [9,8,7,6,5,4,3,2,1].map(pr => '<option value="'+pr+'">'+pr+' (Inconcert '+(pr*11)+' / '+(pr*111)+')'+(pr===9?' \u2014 m\u00e1s importante':(pr===1?' \u2014 menos importante':''))+'</option>').join('');
   tr.innerHTML = '<td><select class="loteFiltro" style="'+SEL_ST+'">'+fops+'</select></td>'+
                  '<td><select class="lotePrio" style="'+SEL_ST+'">'+pops+'</select></td>'+
                  '<td style="text-align:center"><button type="button" onclick="delLote(this)" style="border:none;background:none;color:#dc2626;font-weight:bold;cursor:pointer;font-size:15px">\u2715</button></td>';
