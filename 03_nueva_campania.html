@@ -536,7 +536,7 @@ td{
               <option>1.8_Asalariados</option>
               <option>1.8_Contacto_Reciente</option>
               <option>1.8_Emma</option>
-              <option>1.8_FDP</option>
+              <option>1.8_FDPD</option>
               <option>1.8_HMR</option>
               <option>1.8_Rodamiento</option>
               <option>1.8_Saldo_Alto</option>
@@ -546,6 +546,22 @@ td{
               <option>Personalizado</option>
             </select>
             <small style="color:var(--muted)">Se autocompleta según el origen; editable por negocio.</small>
+          </div>
+          <div class="field">
+            <label>Prioridad del lote</label>
+            <select id="prioridadLote">
+              <option value="">Seleccione prioridad</option>
+              <option value="1">1 — Más importante (Inconcert 99 / 999)</option>
+              <option value="2">2 (88 / 888)</option>
+              <option value="3">3 (77 / 777)</option>
+              <option value="4">4 (66 / 666)</option>
+              <option value="5">5 (55 / 555)</option>
+              <option value="6">6 (44 / 444)</option>
+              <option value="7">7 (33 / 333)</option>
+              <option value="8">8 (22 / 222)</option>
+              <option value="9">9 — Menos importante (11 / 111)</option>
+            </select>
+            <small style="color:var(--muted)">1 = más importante. El robot traduce este ranking a la prioridad del lote y de la base de contactos en Inconcert.</small>
           </div>
 
           <div class="field"></div>
