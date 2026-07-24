@@ -490,31 +490,10 @@ td{
       <div class="card-body">
         <div class="form-row">
           <div class="field">
-            <label>Nombre de campaña</label>
-            <input type="text" id="nombreCampania" placeholder="Ej. Campaña mora cartera mayo">
-          </div>
-
-          <div class="field">
-            <label>Origen de datos</label>
-            <select id="archivoRaw">
-              <option value="">Seleccione origen</option>
-              <option>Raw_Call</option>
-              <option>Raw_CC</option>
-              <option>Personalizado</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Responsable</label>
-            <input type="text" id="responsable" placeholder="Ej. Analista de cartera">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="field">
-            <label>Equipos <span style="color:var(--muted);font-weight:normal">(opcional)</span></label>
+            <label>Campaña / Equipo (mora)</label>
             <select id="equipo">
-              <option value="">Seleccione equipo</option>
+              <option value="">Seleccione campaña / equipo</option>
+              <option>Cobro_NI</option>
               <option>Cobro_Call</option>
               <option>Cobro_M1</option>
               <option>Cobro_M2</option>
@@ -524,47 +503,21 @@ td{
               <option>Cash_M4</option>
               <option>Cobro_EMMA</option>
             </select>
-            <small style="color:var(--muted)">Motor de marcación en Inconcert.</small>
+            <small style="color:var(--muted)">Es la campaña en Inconcert (Motor de marcación). Ej.: M0 &rarr; Cobro_NI.</small>
           </div>
-
           <div class="field">
-            <label>Filtros predeterminados</label>
-            <select id="filtroPredet">
-              <option value="">Seleccione filtro</option>
-              <option>1.4_Incumplida</option>
-              <option>1.4_Incumplida_Mes</option>
-              <option>1.8_Asalariados</option>
-              <option>1.8_Contacto_Reciente</option>
-              <option>1.8_Emma</option>
-              <option>1.8_FDPD</option>
-              <option>1.8_HMR</option>
-              <option>1.8_Rodamiento</option>
-              <option>1.8_Saldo_Alto</option>
-              <option>1.8_Saldo_Bajo</option>
-              <option>1.8_Saldo_Medio</option>
-              <option>1.8_Sin_Gestion</option>
+            <label>Origen de datos</label>
+            <select id="archivoRaw">
+              <option value="">Seleccione origen</option>
+              <option>Raw_Call</option>
+              <option>Raw_CC</option>
               <option>Personalizado</option>
             </select>
-            <small style="color:var(--muted)">Se autocompleta según el origen; editable por negocio.</small>
           </div>
           <div class="field">
-            <label>Prioridad del lote</label>
-            <select id="prioridadLote">
-              <option value="">Seleccione prioridad</option>
-              <option value="1">1 — Más importante (Inconcert 99 / 999)</option>
-              <option value="2">2 (88 / 888)</option>
-              <option value="3">3 (77 / 777)</option>
-              <option value="4">4 (66 / 666)</option>
-              <option value="5">5 (55 / 555)</option>
-              <option value="6">6 (44 / 444)</option>
-              <option value="7">7 (33 / 333)</option>
-              <option value="8">8 (22 / 222)</option>
-              <option value="9">9 — Menos importante (11 / 111)</option>
-            </select>
-            <small style="color:var(--muted)">1 = más importante. El robot traduce este ranking a la prioridad del lote y de la base de contactos en Inconcert.</small>
+            <label>Responsable</label>
+            <input type="text" id="responsable" placeholder="Ej. Analista de cartera">
           </div>
-
-          <div class="field"></div>
         </div>
       </div>
     </section>
@@ -572,12 +525,34 @@ td{
     <section class="card">
       <div class="card-header">
         <div>
-          <h3>Filtros de campaña</h3>
-          <p>Haga clic en los botones para activar o desactivar criterios.</p>
+          <h3>Lotes de la campa&ntilde;a</h3>
+          <p>Cada lote es un filtro predeterminado con su prioridad. Agreg&aacute; los lotes que incluye esta campa&ntilde;a/mora.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th style="width:52%">Filtro predeterminado (lote)</th><th style="width:38%">Prioridad (1 = m&aacute;s importante)</th><th></th></tr></thead>
+            <tbody id="lotesBody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px"><button type="button" class="btn btn-secondary" onclick="addLote()">+ Agregar lote</button></div>
+        <small style="color:var(--muted);display:block;margin-top:10px">Los filtros predeterminados y sus condiciones se administran en <strong>Par&aacute;metros</strong>. La prioridad se traduce en Inconcert (1 &rarr; 99/999, 2 &rarr; 88/888&hellip;). Para un filtro que a&uacute;n no existe, eleg&iacute; &ldquo;Personalizado&rdquo; y defin&iacute; sus condiciones abajo.</small>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h3>Condiciones del filtro personalizado</h3>
+          <p>Solo para el caso &ldquo;Personalizado&rdquo;. Los filtros predeterminados y sus condiciones se administran en Par&aacute;metros.</p>
         </div>
       </div>
 
-      <div class="card-body">
+      <div class="card-body" style="padding-bottom:0">
+        <button type="button" class="btn btn-secondary" onclick="togglePers()">Mostrar / ocultar condiciones del filtro personalizado</button>
+      </div>
+      <div class="card-body" id="persBody" style="display:none">
 
         <div class="grid">
 
@@ -855,11 +830,9 @@ const resumenFiltros = document.getElementById("resumenFiltros");
 const resumenCampania = document.getElementById("resumenCampania");
 const resumenEstado = document.getElementById("resumenEstado");
 const resultado = document.getElementById("resultado");
-const nombreCampania = document.getElementById("nombreCampania");
 const archivoRaw = document.getElementById("archivoRaw");
 const responsable = document.getElementById("responsable");
 const equipo = document.getElementById("equipo");
-const filtroPredet = document.getElementById("filtroPredet");
 const fechaEjecucion = document.getElementById("fechaEjecucion");
 const btnProcesar = document.getElementById("btnProcesar");
 const btnLimpiar = document.getElementById("btnLimpiar");
@@ -878,7 +851,7 @@ function actualizarResumen(){
   kpiFiltros.textContent = cantidad;
   resumenFiltros.textContent = cantidad;
   kpiClientes.textContent = estimado.toLocaleString("es-AR");
-  resumenCampania.textContent = nombreCampania.value.trim() || "Sin definir";
+  resumenCampania.textContent = equipo.value || "Sin definir";
 }
 
 botonesFiltro.forEach(btn => {
@@ -888,15 +861,14 @@ botonesFiltro.forEach(btn => {
   });
 });
 
-nombreCampania.addEventListener("input", actualizarResumen);
+equipo.addEventListener("change", actualizarResumen);
 
 btnLimpiar.addEventListener("click", () => {
   botonesFiltro.forEach(btn => btn.classList.remove("active"));
-  nombreCampania.value = "";
   archivoRaw.value = "";
   responsable.value = "";
   equipo.value = "";
-  filtroPredet.value = "";
+  document.getElementById("lotesBody").innerHTML = ""; addLote();
   fechaEjecucion.value = "";
   document.getElementById("fechaActualizada").value = "";
   document.getElementById("fechaAtraso").value = "";
@@ -910,23 +882,24 @@ btnLimpiar.addEventListener("click", () => {
 btnProcesar.addEventListener("click", () => {
   const filtros = obtenerFiltrosActivos();
 
-  if(nombreCampania.value.trim() === "" || archivoRaw.value === ""){
+  if(equipo.value === "" || archivoRaw.value === ""){
     resultado.className = "result-box success";
     resultado.style.background = "#fee2e2";
     resultado.style.color = "#dc2626";
-    resultado.textContent = "Debe completar el nombre de campaña y seleccionar el origen de datos antes de enviar la solicitud.";
+    resultado.textContent = "Debe seleccionar la campaña/equipo y el origen de datos antes de enviar la solicitud.";
     return;
   }
 
-  if(filtros.length === 0){
+  const lotes = Array.from(document.querySelectorAll("#lotesBody select.loteFiltro")).filter(el => el.value !== "");
+  if(lotes.length === 0){
     resultado.className = "result-box success";
     resultado.style.background = "#fef3c7";
     resultado.style.color = "#92400e";
-    resultado.textContent = "Debe seleccionar al menos un filtro para procesar la campaña.";
+    resultado.textContent = "Debe agregar al menos un lote (filtro predeterminado) a la campaña.";
     return;
   }
 
-  const registros = filtros.length * 430;
+  const registros = lotes.length * 430;
   const id = "PROC-" + String(Math.floor(Math.random() * 9000) + 1000);
 
   resultado.style.background = "";
@@ -941,9 +914,9 @@ btnProcesar.addEventListener("click", () => {
   const fila = document.createElement("tr");
   fila.innerHTML = `
     <td>${id}</td>
-    <td>${nombreCampania.value}</td>
+    <td>${equipo.value}</td>
     <td>${archivoRaw.value}</td>
-    <td>${filtros.length}</td>
+    <td>${lotes.length}</td>
     <td>${registros.toLocaleString("es-AR")}</td>
     <td><span class="badge green">Pendiente robot</span></td>
     <td>${ejec}</td>
@@ -954,6 +927,21 @@ btnProcesar.addEventListener("click", () => {
   setTimeout(function(){ window.location.href = "04_confirmacion.html"; }, 900);
 });
 
+const LOTE_FILTROS = ["1.4_Incumplida","1.4_Incumplida_Mes","1.8_Asalariados","1.8_Contacto_Reciente","1.8_Emma","1.8_FDPD","1.8_HMR","1.8_Rodamiento","1.8_Saldo_Alto","1.8_Saldo_Bajo","1.8_Saldo_Medio","1.8_Sin_Gestion","Personalizado"];
+const SEL_ST = "width:100%;height:38px;border:1px solid var(--borde);border-radius:9px;padding:0 8px;font-size:13px";
+function addLote(){
+  const tb = document.getElementById("lotesBody");
+  const tr = document.createElement("tr");
+  const fops = '<option value="">Seleccione filtro</option>' + LOTE_FILTROS.map(f => '<option>'+f+'</option>').join('');
+  const pops = '<option value="">Prioridad</option>' + [1,2,3,4,5,6,7,8,9].map(pr => '<option value="'+pr+'">'+pr+(pr===1?' \u2014 m\u00e1s importante':(pr===9?' \u2014 menos importante':''))+'</option>').join('');
+  tr.innerHTML = '<td><select class="loteFiltro" style="'+SEL_ST+'">'+fops+'</select></td>'+
+                 '<td><select class="lotePrio" style="'+SEL_ST+'">'+pops+'</select></td>'+
+                 '<td style="text-align:center"><button type="button" onclick="delLote(this)" style="border:none;background:none;color:#dc2626;font-weight:bold;cursor:pointer;font-size:15px">\u2715</button></td>';
+  tb.appendChild(tr);
+}
+function delLote(b){ const tr=b.closest("tr"); tr.parentNode.removeChild(tr); }
+function togglePers(){ const el=document.getElementById("persBody"); el.style.display = (el.style.display==="none") ? "" : "none"; }
+addLote();
 actualizarResumen();
 </script>
 
