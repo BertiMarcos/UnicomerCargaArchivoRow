@@ -491,29 +491,11 @@ td{
         <div class="form-row">
           <div class="field">
             <label>Campaña / Equipo (mora)</label>
-            <select id="equipo">
-              <option value="">Seleccione campaña / equipo</option>
-              <option>Cobro_NI</option>
-              <option>Cobro_Call</option>
-              <option>Cobro_M1</option>
-              <option>Cobro_M2</option>
-              <option>Cobro_M3</option>
-              <option>Cobro_M4</option>
-              <option>Cash_M3</option>
-              <option>Cash_M4</option>
-              <option>Cobro_EMMA</option>
-            </select>
-            <small style="color:var(--muted)">Es la campaña en Inconcert (Motor de marcación). Ej.: M0 &rarr; Cobro_NI.</small>
+            <input list="equiposList" id="equipo" placeholder="Seleccione o escriba (ej. Cobro_NI)">
+            <datalist id="equiposList"><option>Cobro_NI</option><option>Cobro_Call</option><option>Cobro_M1</option><option>Cobro_M2</option><option>Cobro_M3</option><option>Cobro_M4</option><option>Cobro_M5</option><option>Cobro_M6</option><option>Cobro_M7</option><option>Cobro_M8</option><option>Cobro_M9</option><option>Cash_M3</option><option>Cash_M4</option><option>Cobro_EMMA</option></datalist>
+            <small style="color:var(--muted)">Se sincroniza con Inconcert (Motor de marcación &middot; Procesos salientes). Hay muchas m&aacute;s; el negocio las administra en Par&aacute;metros. El robot elimina cada lote antes de crear la importaci&oacute;n.</small>
           </div>
-          <div class="field">
-            <label>Origen de datos</label>
-            <select id="archivoRaw">
-              <option value="">Seleccione origen</option>
-              <option>Raw_Call</option>
-              <option>Raw_CC</option>
-              <option>Personalizado</option>
-            </select>
-          </div>
+          <div class="field"></div>
         </div>
       </div>
     </section>
@@ -566,173 +548,33 @@ td{
 
       <div class="card-body">
 
+        <div class="form-row" style="margin-bottom:8px"><div class="field"><label>Nombre de la importación</label><input list="impList" id="archivoRaw" placeholder="Ej. Raw_Call / Raw_CC (o nombre propio)"><datalist id="impList"><option>Raw_Call</option><option>Raw_CC</option></datalist><small style="color:var(--muted)">Aquí se sube lo extraído de Power BI. Raw_Call y Raw_CC deben estar cargadas cada mañana; puede ser un nombre propio.</small></div><div class="field"></div><div class="field"></div></div>
+
         <div class="grid">
-
-          <div class="filter-group">
-            <div class="filter-title">Responsable / Tipo</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Empleado">Empleado</button>
-              <button class="filter-btn red" data-filter="Fallecido">Fallecido</button>
-              <button class="filter-btn blue" data-filter="FINS">FINS</button>
-              <button class="filter-btn active" data-filter="FPD">FPD</button>
-              <button class="filter-btn blue" data-filter="Legal">Legal</button>
-              <button class="filter-btn blue" data-filter="Medio Digital">Medio Digital</button>
-              <button class="filter-btn" data-filter="Producto">Producto</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Nivel mora actual</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="M1 Actual">M1</button>
-              <button class="filter-btn" data-filter="M4 Actual">M4</button>
-              <button class="filter-btn" data-filter="M7 Actual">M7</button>
-              <button class="filter-btn" data-filter="M2 Actual">M2</button>
-              <button class="filter-btn" data-filter="M5 Actual">M5</button>
-              <button class="filter-btn" data-filter="M8 Actual">M8</button>
-              <button class="filter-btn" data-filter="M3 Actual">M3</button>
-              <button class="filter-btn" data-filter="M6 Actual">M6</button>
-              <button class="filter-btn" data-filter="M9 Actual">M9</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Nivel mora anterior</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="M0 Anterior">M0</button>
-              <button class="filter-btn" data-filter="M1 Anterior">M1</button>
-              <button class="filter-btn" data-filter="M2 Anterior">M2</button>
-              <button class="filter-btn" data-filter="M3 Anterior">M3</button>
-              <button class="filter-btn active" data-filter="M4 Anterior">M4</button>
-              <button class="filter-btn active" data-filter="M5 Anterior">M5</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Rodamiento</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="Rodamiento 1">1</button>
-              <button class="filter-btn" data-filter="Rodamiento 2">2</button>
-              <button class="filter-btn" data-filter="Rodamiento 3">3</button>
-              <button class="filter-btn" data-filter="Rodamiento 4">4</button>
-              <button class="filter-btn" data-filter="Rodamiento 5">5</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Excluir</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Excluir NO">NO</button>
-              <button class="filter-btn" data-filter="Excluir SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Gracia</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Gracia NO">NO</button>
-              <button class="filter-btn" data-filter="Gracia SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Cash</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Cash NO">NO</button>
-              <button class="filter-btn" data-filter="Cash SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Tipo</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="Tipo TEL">TEL</button>
-              <button class="filter-btn" data-filter="Tipo VISITA">VISITA</button>
-              <button class="filter-btn" data-filter="Tipo DIGITAL">DIGITAL</button>
-            </div>
-          </div>
-
-          <div class="filter-group full">
-            <div class="filter-title">Score</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="Score 0">0</button>
-              <button class="filter-btn" data-filter="Score 100">100</button>
-              <button class="filter-btn" data-filter="Score 200">200</button>
-              <button class="filter-btn" data-filter="Score 300">300</button>
-              <button class="filter-btn" data-filter="Score 400">400</button>
-              <button class="filter-btn" data-filter="Score 500">500</button>
-              <button class="filter-btn" data-filter="Score 600">600</button>
-              <button class="filter-btn" data-filter="Score 700">700</button>
-              <button class="filter-btn" data-filter="Score 800">800</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Teléf. principales</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Tel Principales NO">NO</button>
-              <button class="filter-btn" data-filter="Tel Principales SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Marcado fallecido</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="Marcado Fallecido NO">NO</button>
-              <button class="filter-btn red" data-filter="Marcado Fallecido SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">COD_22</div>
-            <div class="buttons">
-              <button class="filter-btn blue" data-filter="COD_22 NO">NO</button>
-              <button class="filter-btn" data-filter="COD_22 SI">SI</button>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-title">Última acción</div>
-            <div class="buttons">
-              <button class="filter-btn" data-filter="Última Acción Todas">Todas</button>
-              <button class="filter-btn" data-filter="Última Acción Contacto">Contacto</button>
-              <button class="filter-btn" data-filter="Última Acción Sin contacto">Sin contacto</button>
-            </div>
-          </div>
-
-          <div class="filter-group full">
-            <div class="filter-title">Estado promesa de pago</div>
-            <div class="buttons">
-              <button class="filter-btn active" data-filter="Incumplida 1">Incumplida 1</button>
-              <button class="filter-btn active" data-filter="Incumplida 2">Incumplida 2</button>
-              <button class="filter-btn active" data-filter="Incumplida 3">Incumplida 3</button>
-              <button class="filter-btn yellow" data-filter="PP Parcial">PP Parcial</button>
-              <button class="filter-btn green" data-filter="PP Vigente">PP Vigente</button>
-              <button class="filter-btn active" data-filter="Sin PP">Sin PP</button>
-            </div>
-          </div>
-
-          <div class="filter-group full">
-            <div class="filter-title">Fecha actualizada / Fecha atraso / Fecha última gestión</div>
-            <div class="form-row">
-              <div class="field">
-                <label>Fecha actualizada</label>
-                <input type="date" id="fechaActualizada">
-              </div>
-
-              <div class="field">
-                <label>Fecha atraso desde</label>
-                <input type="date" id="fechaAtraso">
-              </div>
-
-              <div class="field">
-                <label>Fecha última gestión</label>
-                <input type="date" id="fechaGestion">
-              </div>
-            </div>
-          </div>
-
-
+          <div class="filter-group full"><div class="filter-title">Responsable / Tipo</div><div class="buttons"><button class="filter-btn" data-filter="CASH">CASH</button><button class="filter-btn" data-filter="EMMA_INTERNO">EMMA_INTERNO</button><button class="filter-btn" data-filter="EMMA_TERCERO">EMMA_TERCERO</button><button class="filter-btn" data-filter="EMPLEADO">EMPLEADO</button><button class="filter-btn" data-filter="EXTERNOS">EXTERNOS</button><button class="filter-btn" data-filter="FALLECIDO">FALLECIDO</button><button class="filter-btn" data-filter="FINS">FINS</button><button class="filter-btn" data-filter="FPD">FPD</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Nivel mora</div><div class="buttons"><button class="filter-btn" data-filter="M0">M0</button><button class="filter-btn" data-filter="M1">M1</button><button class="filter-btn" data-filter="M2">M2</button><button class="filter-btn" data-filter="M3">M3</button><button class="filter-btn" data-filter="M4">M4</button><button class="filter-btn" data-filter="M5">M5</button><button class="filter-btn" data-filter="M6">M6</button><button class="filter-btn" data-filter="M7">M7</button><button class="filter-btn" data-filter="M8">M8</button><button class="filter-btn" data-filter="M9">M9</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Nivel mora actual</div><div class="buttons"><button class="filter-btn" data-filter="M1">M1</button><button class="filter-btn" data-filter="M2">M2</button><button class="filter-btn" data-filter="M3">M3</button><button class="filter-btn" data-filter="M4">M4</button><button class="filter-btn" data-filter="M5">M5</button><button class="filter-btn" data-filter="M6">M6</button><button class="filter-btn" data-filter="M7">M7</button><button class="filter-btn" data-filter="M8">M8</button><button class="filter-btn" data-filter="M9">M9</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Nivel mora anterior</div><div class="buttons"><button class="filter-btn" data-filter="M0">M0</button><button class="filter-btn" data-filter="M1">M1</button><button class="filter-btn" data-filter="M2">M2</button><button class="filter-btn" data-filter="M3">M3</button><button class="filter-btn" data-filter="M4">M4</button><button class="filter-btn" data-filter="M5">M5</button><button class="filter-btn" data-filter="M6">M6</button><button class="filter-btn" data-filter="M7">M7</button><button class="filter-btn" data-filter="M8">M8</button><button class="filter-btn" data-filter="M9">M9</button><button class="filter-btn" data-filter="No Aplica">No Aplica</button></div></div>
+          <div class="filter-group"><div class="filter-title">Rodamiento</div><div class="buttons"><button class="filter-btn" data-filter="0">0</button><button class="filter-btn" data-filter="1">1</button></div></div>
+          <div class="filter-group"><div class="filter-title">Excluir</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Gracia</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Cash</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Tipo</div><div class="buttons"><button class="filter-btn" data-filter="TEL">TEL</button></div></div>
+          <div class="filter-group"><div class="filter-title">FPD</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">EMMA</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">No Contact</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Refinanciada</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">LISTADO</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Marcado Fallecido</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Teléf. Principales</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">COD_22</div><div class="buttons"><button class="filter-btn" data-filter="NO">NO</button><button class="filter-btn" data-filter="SI">SI</button></div></div>
+          <div class="filter-group"><div class="filter-title">Última acción</div><select id="ultimaAccion" style="width:100%;height:38px;border:1px solid var(--borde);border-radius:9px;padding:0 8px;font-size:13px"><option>Todas</option><option>Con contacto</option><option>Sin contacto</option></select></div>
+          <div class="filter-group"><div class="filter-title">Cédula</div><input id="cedula" placeholder="Buscar cédula" style="width:100%;height:38px;border:1px solid var(--borde);border-radius:9px;padding:0 8px;font-size:13px"></div>
+          <div class="filter-group full"><div class="filter-title">Score</div><div class="buttons"><button class="filter-btn" data-filter="0">0</button><button class="filter-btn" data-filter="100">100</button><button class="filter-btn" data-filter="200">200</button><button class="filter-btn" data-filter="300">300</button><button class="filter-btn" data-filter="400">400</button><button class="filter-btn" data-filter="500">500</button><button class="filter-btn" data-filter="600">600</button><button class="filter-btn" data-filter="700">700</button><button class="filter-btn" data-filter="800">800</button><button class="filter-btn" data-filter="900">900</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Estado promesa de pago</div><div class="buttons"><button class="filter-btn" data-filter="INCUMPLIDA 1">INCUMPLIDA 1</button><button class="filter-btn" data-filter="INCUMPLIDA ANTIGUA">INCUMPLIDA ANTIGUA</button><button class="filter-btn" data-filter="INCUMPLIDA MES">INCUMPLIDA MES</button><button class="filter-btn" data-filter="PP PARCIAL">PP PARCIAL</button><button class="filter-btn" data-filter="PP VIGENTE">PP VIGENTE</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Riesgo</div><div class="buttons"><button class="filter-btn" data-filter="1_Alta">1_Alta</button><button class="filter-btn" data-filter="2_Media Alta">2_Media Alta</button><button class="filter-btn" data-filter="3_Media">3_Media</button><button class="filter-btn" data-filter="4_Media Baja">4_Media Baja</button><button class="filter-btn" data-filter="5_Baja">5_Baja</button><button class="filter-btn" data-filter="6_Muy Baja">6_Muy Baja</button></div></div>
+          <div class="filter-group full"><div class="filter-title">Rangos</div><div class="form-row"><div class="field"><label>Atraso Días</label><div style="display:flex;gap:8px"><input type="number" placeholder="mín" value="0" style="width:50%"><input type="number" placeholder="máx" value="99999" style="width:50%"></div></div><div class="field"><label>Días Últ. Contacto</label><div style="display:flex;gap:8px"><input type="number" placeholder="mín" value="0" style="width:50%"><input type="number" placeholder="máx" value="999" style="width:50%"></div></div><div class="field"><label>Días Últ. Pago</label><div style="display:flex;gap:8px"><input type="number" placeholder="mín" value="0" style="width:50%"><input type="number" placeholder="máx" value="9999" style="width:50%"></div></div></div><div class="form-row" style="margin-top:6px"><div class="field"><label>Mínimo Gestiones</label><div style="display:flex;gap:8px"><input type="number" placeholder="mín" value="0" style="width:50%"><input type="number" placeholder="máx" value="99" style="width:50%"></div></div><div class="field"><label>Proyección Mora</label><div style="display:flex;gap:8px"><input type="number" placeholder="mín" value="-7" style="width:50%"><input type="number" placeholder="máx" value="2" style="width:50%"></div></div><div class="field"></div></div></div>
+          <div class="filter-group full"><div class="filter-title">Fechas</div><div class="form-row"><div class="field"><label>Fecha Últ. Pago (desde / hasta)</label><div style="display:flex;gap:8px"><input type="date" style="width:50%"><input type="date" style="width:50%"></div></div><div class="field"><label>Fecha actualizada (Power BI)</label><input type="text" value="Se actualiza automáticamente" readonly style="width:100%;height:38px;border:1px solid var(--borde);border-radius:9px;padding:0 8px;font-size:13px;background:#f1f5f9;color:#64748b"></div><div class="field"></div></div></div>
         </div>
 
         <div id="resultado" class="result-box"></div>
@@ -860,7 +702,7 @@ botonesFiltro.forEach(btn => {
   });
 });
 
-equipo.addEventListener("change", actualizarResumen);
+equipo.addEventListener("input", actualizarResumen);
 
 btnLimpiar.addEventListener("click", () => {
   botonesFiltro.forEach(btn => btn.classList.remove("active"));
@@ -868,9 +710,6 @@ btnLimpiar.addEventListener("click", () => {
   equipo.value = "";
   document.getElementById("lotesBody").innerHTML = ""; addLote();
   fechaEjecucion.value = "";
-  document.getElementById("fechaActualizada").value = "";
-  document.getElementById("fechaAtraso").value = "";
-  document.getElementById("fechaGestion").value = "";
   resumenEstado.textContent = "Pendiente";
   resultado.className = "result-box";
   resultado.textContent = "";
